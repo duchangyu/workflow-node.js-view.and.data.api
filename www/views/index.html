@@ -40,16 +40,63 @@
 
     <script src="Autodesk.ADN.Viewing.Extension.ToolbarExt/Autodesk.ADN.Viewing.Extension.ToolbarExt.js"></script>
 
-     <script src="Autodesk.ADN.Viewing.Extension.Annotation/Autodesk.ADN.Viewing.Extension.Annotation.js"></script>
 
     <script src=index.js></script>
+
+        <style>
+            /* CSS to color our custom toolbar buttons for the <div> toolbar */
+        #lmvdbg_div_tb_button_red {
+            background:red;
+        }
+        #lmvdbg_div_tb_button_blue {
+            background:blue;
+        }
+        #lmvdbg_div_tb_button_green {
+            background:green;
+        }
+        #lmvdbg_div_tb_button_orange {
+            background:orange;
+        }
+            /* CSS to color our custom toolbar buttons for the canvas toolbar */
+        #lmvdbg_canvas_tb_button_solid {
+            background: antiqueWhite;
+            border: 1px  solid black;
+            border-right: 0px;
+        }
+        #lmvdbg_canvas_tb_button_gradient {
+            background: cornflowerBlue;
+            border: 1px solid black;
+        }
+
+         
+         /* These two CSS classes control overrides for toolbar placement.  Here we add a new class
+            with "lmvdbg-" prefix that will override attributes from "adsk-control" and "adsk_toolbar".
+            See code below in createToolbar() for finding those nodes and adding this class.  */
+        .lmvdbg_div_tb_positioner {
+            position: relative;
+            left: 0%;
+            text-align: left;
+        }
+        .lmvdbg_canvas_tb_positioner {
+            display: block;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+    </style>
 
 </head>
 
 <body style="margin:0">
 
+
+
 <div id="viewerDiv">
     </div>
+    
+    <h1>Autodesk View and Data API</h1>
+
+    <div id="custom_toolbar_container" class="lmvdbg_div_tb_positioner"></div>
 
 </body>
 </html>

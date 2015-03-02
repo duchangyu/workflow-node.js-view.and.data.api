@@ -27,7 +27,7 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
 
     var _canvasToolbar = null;
     
-    var toolbarConfig = null;
+    var toolbarConfiguration = null;
  
 
 
@@ -35,8 +35,8 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
 
     _self.load = function () {
 
-        if (!options || !options.toolbarConfig) {
-            console.error('toolbarConfig is not found, exiting...');
+        if (!options || !options.toolbarConfiguration) {
+            console.error('toolbarConfiguration is not found, exiting...');
             return false;
 
         }
@@ -57,71 +57,45 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
 
     _self.createToolbar = function() {
 
-       toolbarConfig = options.toolbarConfig;
+       toolbarConfiguration = options.toolbarConfiguration;
 
    
        //Create each toolbars in toolbar configuration
-       for (var i = 0; i < toolbarConfig.toolbars.length; i++) {
+       for (var i = 0; i < toolbarConfiguration.toolbars.length; i++) {
           
             //get the toolbar config item
-            var toolbarCfg = toolbarConfig.toolbars[i];
+            var toolbarItemCfg = toolbarConfiguration.toolbars[i];
 
             // create a new subToolbar as part of the standard viewer's toolbars.  We will use
             // transparent images for the tool buttons to match the standard style.
-            if (toolbarCfg.toolbar_type == 'viewer_subToolbar') {
+            if (toolbarItemCfg.toolbar_type == 'viewer_subToolbar') {
               
                 // get the main toolbar from the viewer
                 var mainToolbar = _viewer.getToolbar(true);     
 
                 console.assert(mainToolbar != null);
 
-                var  mainViewerSubToolbar = new Autodesk.Viewing.UI.ControlGroup(toolbarCfg.id);
+                var  mainViewerSubToolbar = new Autodesk.Viewing.UI.ControlGroup(toolbarItemCfg.id);
         
                 // create buttons and add to toolbar
+                _self.createButtons(toolbarItemCfg,mainViewerSubToolbar);
                    
-                for (var i = 0; i < toolbarCfg.buttons.length; i++) {
-                    var buttonCfg = toolbarCfg.buttons[i];
-
-                    var buttonId = buttonCfg.id ? buttonCfg.id : 'viewer_subtoolbar_button_' + i;
-                    var button1 = new Autodesk.Viewing.UI.Button(buttonId);
-                    
-
-                    //set backgroud image
-                    if (typeof buttonCfg.backgroundImage !== 'undefined'){
-                        button1.icon.style.backgroundImage = 'url('+ buttonCfg.backgroundImage +')';
-                    }
-
-                    //set button tooltip
-                    if (typeof buttonCfg.tooltip !== 'undefined'){
-                    button1.setToolTip(buttonCfg.tooltip);
-                    }
-
-                    //set botton visiblity status
-                    if (typeof buttonCfg.visible !== 'undefined'){
-                        button1.setVisible(buttonCfg.visible);
-                    }
-
-                    button1.onClick = buttonCfg.onClick;
-
-                    mainViewerSubToolbar.addControl(button1);
-
-                }
-
+               
                 mainToolbar.addControl(mainViewerSubToolbar);
 
 
 
             }
             // create toolbar in viewer canvas
-            else if(toolbarCfg.toolbar_type == 'viewer_canvas'){
+            else if(toolbarItemCfg.toolbar_type == 'viewer_canvas'){
 
-                var canvasToolbar = new Autodesk.Viewing.UI.ToolBar("lmvdbg_canvas_toolbar");
+                var canvasToolbar = new Autodesk.Viewing.UI.ToolBar(toolbarItemCfg.id);
 
-                if (typeof toolbarCfg.position_css_class !== 'undefined' || 
-                    toolbarCfg.position_css_class != ''
+                if (typeof toolbarItemCfg.style_class !== 'undefined' || 
+                    toolbarItemCfg.style_class !== ''
                     ) {
                     // we need to add a class to this container so we can reposition where we want (see CSS class above)
-                    canvasToolbar.addClass(toolbarCfg.position_css_class);   
+                    canvasToolbar.addClass(toolbarItemCfg.style_class);   
                 }
                 else
                 {
@@ -130,21 +104,54 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
                 }
                 
 
-                // //create buttons and add to toolbar
-                // _self.createButtons(toolbarCfg,canvasToolbar);
+                // create buttons and add to toolbar
+                _self.createButtons(toolbarItemCfg, canvasToolbar);
+                   
+
+                // for (var i = 0; i < toolbarItemCfg.buttons.length; i++) {
+                //     var buttonCfg = toolbarItemCfg.buttons[i];
+
+                //     var buttonId = buttonCfg.id ? buttonCfg.id : 'viewer_canvas_toolbar_button_' + i;
+                //     var button1 = new Autodesk.Viewing.UI.Button(buttonId);
+                    
+
+                //     //set backgroud image
+                //     if (typeof buttonCfg.backgroundImage !== 'undefined'){
+                //         button1.icon.style.backgroundImage = 'url('+ buttonCfg.backgroundImage +')';
+                //     }
+
+                //     //set button tooltip
+                //     if (typeof buttonCfg.tooltip !== 'undefined'){
+                //     button1.setToolTip(buttonCfg.tooltip);
+                //     }
+
+                //     //set botton visiblity status
+                //     if (typeof buttonCfg.visible !== 'undefined'){
+                //         button1.setVisible(buttonCfg.visible);
+                //     }
+
+                //     button1.onClick = buttonCfg.onClick;
+
+                //     canvasToolbar.addControl(button1);
+
+                // }
                    
 
        
-                // var htmlDivContainer = $('<div></div>');
-                // htmlDivContainer.style = 'position: relative; top: 10px; left: 0px; z-index: 200;';
-                // htmlDivContainer.appendTo(_viewer.container);
+                var html = '<div id="adnextensions_toolbar_canvas_div" ';
+                html = html + 'style="position: absolute; top: 10px; left: 0px; z-index: 200;"></div>';
+                var htmlDivContainer = $(html)[0];
 
-                // htmlDivContainer.appendChild(_canvasToolbar.container);
+                //htmlDivContainer.appendTo(_viewer.container);
+
+                htmlDivContainer.appendChild(canvasToolbar.container);
+
+                _viewer.container.appendChild(htmlDivContainer);
  
 
             }
             //
-            else if(toolbarCfg.toolbar_type == 'custom_canvas'){
+            else if(toolbarItemCfg.toolbar_type == 'custom_canvas'){
 
             }
             else{
@@ -157,53 +164,52 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
         
 
         
-    }
+    };
 
+    _self.createButtons = function(toolbarItemCfg, toobar){
 
-    // //create buttons and add to toolbar
-    // _self.createButtons = function(toolbarCfg, toolbar)
-    // {
-    //     for (var i = 0; i < toolbarCfg.buttons.length; i++) {
-    //         var buttonCfg = toolbarCfg.buttons[i];
+        for (var j = 0; j < toolbarItemCfg.buttons.length; j++) {
+            var buttonCfg = toolbarItemCfg.buttons[j];
 
-    //         var buttonId = buttonCfg.id ? buttonCfg.id : 'viewer_subtoolbar_button_' + i;
-    //         var button1 = new Autodesk.Viewing.UI.Button(buttonId);
+            var buttonId = buttonCfg.id ? buttonCfg.id : 'viewer_subtoolbar_button_' + j;
+            var button1 = new Autodesk.Viewing.UI.Button(buttonId);
             
 
-    //         //set backgroud image
-    //         if (typeof buttonCfg.backgroundImage !== 'undefined'){
-    //             button1.icon.style.backgroundImage = 'url('+ buttonCfg.backgroundImage +')';
-    //         }
+            //set backgroud image
+            if (typeof buttonCfg.backgroundImage !== 'undefined'){
+                button1.icon.style.backgroundImage = 'url('+ buttonCfg.backgroundImage +')';
+            }
 
-    //         //set button tooltip
-    //         if (typeof buttonCfg.tooltip !== 'undefined'){
-    //         button1.setToolTip(buttonCfg.tooltip);
-    //         }
+            //set button tooltip
+            if (typeof buttonCfg.tooltip !== 'undefined'){
+            button1.setToolTip(buttonCfg.tooltip);
+            }
 
-    //         //set botton visiblity status
-    //         if (typeof buttonCfg.visible !== 'undefined'){
-    //             button1.setVisible(buttonCfg.visible);
-    //         }
+            //set botton visiblity status
+            if (typeof buttonCfg.visible !== 'undefined'){
+                button1.setVisible(buttonCfg.visible);
+            }
 
-    //         button1.onClick = buttonCfg.onClick;
+            button1.onClick = buttonCfg.onClick;
 
-    //         toolbar.addControl(button1);
+            toobar.addControl(button1);
 
-    //     }
-    // };
+        }
+    };
+
 
 
     _self.removeToolbar = function(){
 
-        toolbarConfig = options.toolbarConfig;
+        toolbarConfiguration = options.toolbarConfiguration;
 
        
 
-       for (var i = 0; i < toolbarConfig.toolbars.length; i++) {
+       for (var i = 0; i < toolbarConfiguration.toolbars.length; i++) {
           
-            var toolbarCfg = toolbarConfig.toolbars[i];
+            var toolbarItemCfg = toolbarConfiguration.toolbars[i];
 
-            if (toolbarCfg.toolbar_type == 'viewer_subToolbar') {
+            if (toolbarItemCfg.toolbar_type == 'viewer_subToolbar') {
               
                 // get the main toolbar from the viewer
                 var mainToolbar = _viewer.getToolbar(true);     
@@ -211,17 +217,17 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
                 console.assert(mainToolbar != null);
 
                 // this will remove the entire group and take out the corresponding HTML
-                mainToolbar.removeControl(toolbarCfg.id);   
+                mainToolbar.removeControl(toolbarItemCfg.id);   
 
 
 
             }
             //
-            else if(toolbarCfg.toolbar_type == 'viewer_canvas'){
+            else if(toolbarItemCfg.toolbar_type == 'viewer_canvas'){
 
             }
             //
-            else if(toolbarCfg.toolbar_type == 'custom_canvas'){
+            else if(toolbarItemCfg.toolbar_type == 'custom_canvas'){
 
             }
             else{

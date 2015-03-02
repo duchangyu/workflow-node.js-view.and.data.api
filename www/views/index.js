@@ -65,7 +65,7 @@ function onViewerInitialized(viewer)
               // possible values 'viewer_subToolbar' | 'viewer_canvas' | 'custom_canvas'
               'toolbar_type': 'viewer_subToolbar',
               // css classname of toolbar position, required for | 'viewer_canvas' | 'custom_canvas'
-              'position_css_class': '',
+              'style_class': 'lmvdbg_canvas_tb_positioner',
               // array of buttons
               'buttons': [
                 {
@@ -99,7 +99,7 @@ function onViewerInitialized(viewer)
               // possible values 'viewer_subToolbar' | 'viewer_canvas' | 'custom_canvas'
               'toolbar_type': 'viewer_canvas',
               // css classname of toolbar position, required for | 'viewer_canvas' | 'custom_canvas'
-              'position_css_class': '',
+              'style_class': 'lmvdbg_div_tb_positioner',
               // array of buttons
               'buttons': [
                 {
@@ -133,7 +133,7 @@ function onViewerInitialized(viewer)
               // possible values 'viewer_subToolbar' | 'viewer_canvas' | 'custom_canvas'
               'toolbar_type': 'custom_canvas',
               // css classname of toolbar position, required for | 'viewer_canvas' | 'custom_canvas'
-              'position_css_class': '',
+              'style_class': 'lmvdbg_div_tb_positioner',
               // array of buttons
               'buttons': [
                 {
@@ -164,7 +164,7 @@ function onViewerInitialized(viewer)
         };
 
     var options = {
-        'toolbarConfig':toolbarConfig
+        'toolbarConfiguration':toolbarConfig
 
     };
 
