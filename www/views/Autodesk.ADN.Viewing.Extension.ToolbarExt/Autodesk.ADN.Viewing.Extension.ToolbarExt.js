@@ -1,4 +1,4 @@
-//This extension applies v1.2.3 
+//This extension applies view and data API v1.2.3 
 
 
 'use strict';
@@ -68,6 +68,7 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
 
             // create a new subToolbar as part of the standard viewer's toolbars.  We will use
             // transparent images for the tool buttons to match the standard style.
+
             if (toolbarItemCfg.toolbar_type == 'viewer_subToolbar') {
               
                 // get the main toolbar from the viewer
@@ -87,6 +88,7 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
 
             }
             // create toolbar in viewer canvas
+
             else if(toolbarItemCfg.toolbar_type == 'viewer_canvas'){
 
                 var canvasToolbar = new Autodesk.Viewing.UI.ToolBar(toolbarItemCfg.id);
@@ -100,49 +102,16 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
                 else
                 {
                     //set default class to this container for the toolbar
-                    //TODO: 
+                    canvasToolbar.style = 'display: block; position: absolute; left: 0px; top: 0px;';
                 }
                 
 
                 // create buttons and add to toolbar
                 _self.createButtons(toolbarItemCfg, canvasToolbar);
-                   
 
-                // for (var i = 0; i < toolbarItemCfg.buttons.length; i++) {
-                //     var buttonCfg = toolbarItemCfg.buttons[i];
-
-                //     var buttonId = buttonCfg.id ? buttonCfg.id : 'viewer_canvas_toolbar_button_' + i;
-                //     var button1 = new Autodesk.Viewing.UI.Button(buttonId);
-                    
-
-                //     //set backgroud image
-                //     if (typeof buttonCfg.backgroundImage !== 'undefined'){
-                //         button1.icon.style.backgroundImage = 'url('+ buttonCfg.backgroundImage +')';
-                //     }
-
-                //     //set button tooltip
-                //     if (typeof buttonCfg.tooltip !== 'undefined'){
-                //     button1.setToolTip(buttonCfg.tooltip);
-                //     }
-
-                //     //set botton visiblity status
-                //     if (typeof buttonCfg.visible !== 'undefined'){
-                //         button1.setVisible(buttonCfg.visible);
-                //     }
-
-                //     button1.onClick = buttonCfg.onClick;
-
-                //     canvasToolbar.addControl(button1);
-
-                // }
-                   
-
-       
                 var html = '<div id="adnextensions_toolbar_canvas_div" ';
                 html = html + 'style="position: absolute; top: 10px; left: 0px; z-index: 200;"></div>';
                 var htmlDivContainer = $(html)[0];
-
-                //htmlDivContainer.appendTo(_viewer.container);
 
                 htmlDivContainer.appendChild(canvasToolbar.container);
 
@@ -150,8 +119,60 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
  
 
             }
-            //
-            else if(toolbarItemCfg.toolbar_type == 'custom_canvas'){
+            //create toolbar in a custom div container
+
+            else if(toolbarItemCfg.toolbar_type == 'custom_container'){
+
+                
+                if (!toolbarItemCfg.toolbar_container ){
+                    var errMsg = 'toolbar_container is not found. \n';
+                    errMsg = errMsg + 'For toolbar_type=custom_container, you must difine a container on ';
+                    errMsg = errMsg + 'you web page, and specifiy the id of this container to ';
+                    errMsg = errMsg + 'toolbar_container property of toolbar configuration';
+                    console.error(errMsg);
+                    
+                    return false;
+                }
+
+                //the container div
+
+                var toolbarContainer = document.getElementById(toolbarItemCfg.toolbar_container);
+                if (!toolbarContainer) {
+                    var errMsg = 'the toolbar container element with id "'
+                    +toolbarItemCfg.toolbar_container+'" is not found in web page.';
+                    console.error(errMsg);
+                    return false;
+
+                }
+
+
+                var divToolbar = new Autodesk.Viewing.UI.ToolBar(toolbarItemCfg.id);
+
+                if (typeof toolbarItemCfg.style_class !== 'undefined' || 
+                    toolbarItemCfg.style_class !== ''
+                    ) {
+                    // we need to add a class to this container so we can reposition where we want (see CSS class above)
+                    divToolbar.addClass(toolbarItemCfg.style_class);   
+                }
+                else
+                {
+                    //set default class to this container for the toolbar
+                    divToolbar.style = 'display: block; position: absolute; left: 0px; top: 0px;';
+                }
+                
+
+                // create buttons and add to toolbar
+                _self.createButtons(toolbarItemCfg, divToolbar);
+
+                var html = '<div id="adnextensions_toolbar_canvas_div" ';
+                html = html + 'style="position: absolute; top: 10px; left: 0px; z-index: 200;"></div>';
+                var htmlDivContainer = $(html)[0];
+
+                htmlDivContainer.appendChild(divToolbar.container);
+
+                //append to the toolbar container
+                toolbarContainer.appendChild(htmlDivContainer);
+ 
 
             }
             else{
@@ -171,7 +192,7 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
         for (var j = 0; j < toolbarItemCfg.buttons.length; j++) {
             var buttonCfg = toolbarItemCfg.buttons[j];
 
-            var buttonId = buttonCfg.id ? buttonCfg.id : 'viewer_subtoolbar_button_' + j;
+            var buttonId = buttonCfg.id ? buttonCfg.id : 'viewer_toolbar_button_' + j;
             var button1 = new Autodesk.Viewing.UI.Button(buttonId);
             
 
@@ -182,7 +203,12 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
 
             //set button tooltip
             if (typeof buttonCfg.tooltip !== 'undefined'){
-            button1.setToolTip(buttonCfg.tooltip);
+                button1.setToolTip(buttonCfg.tooltip);
+            }
+
+            //set button style class
+            if (typeof buttonCfg.style_class !== 'undefined'){
+                button1.addClass(buttonCfg.style_class);
             }
 
             //set botton visiblity status
@@ -225,9 +251,13 @@ Autodesk.ADN.Viewing.Extension.ToolbarExt = function (viewer, options) {
             //
             else if(toolbarItemCfg.toolbar_type == 'viewer_canvas'){
 
+                $('#adnextensions_toolbar_canvas_div').remove();
             }
             //
-            else if(toolbarItemCfg.toolbar_type == 'custom_canvas'){
+            else if(toolbarItemCfg.toolbar_type == 'custom_container'){
+
+                var id = toolbarItemCfg.toolbar_container;
+                $('#'+id).remove();
 
             }
             else{

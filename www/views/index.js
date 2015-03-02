@@ -62,9 +62,9 @@ function onViewerInitialized(viewer)
                 // id of toolbar
               'id': 'toolbar_viewerSubToolbar_1',
               // position of toolbar
-              // possible values 'viewer_subToolbar' | 'viewer_canvas' | 'custom_canvas'
+              // possible values 'viewer_subToolbar' | 'viewer_canvas' | 'custom_container'
               'toolbar_type': 'viewer_subToolbar',
-              // css classname of toolbar position, required for | 'viewer_canvas' | 'custom_canvas'
+              // css classname of toolbar position, required for | 'viewer_canvas' | 'custom_container'
               'style_class': 'lmvdbg_canvas_tb_positioner',
               // array of buttons
               'buttons': [
@@ -96,9 +96,9 @@ function onViewerInitialized(viewer)
                 //Id of toolbar
               'id': 'toolbar_viewerCanvas_1',
               // position of toolbar
-              // possible values 'viewer_subToolbar' | 'viewer_canvas' | 'custom_canvas'
+              // possible values 'viewer_subToolbar' | 'viewer_canvas' | 'custom_container'
               'toolbar_type': 'viewer_canvas',
-              // css classname of toolbar position, required for | 'viewer_canvas' | 'custom_canvas'
+              // css classname of toolbar position, required for | 'viewer_canvas' | 'custom_container'
               'style_class': 'lmvdbg_div_tb_positioner',
               // array of buttons
               'buttons': [
@@ -106,6 +106,7 @@ function onViewerInitialized(viewer)
                   'id': 'button3',
                   'buttonText': 'button3',
                   'tooltip': 'tooltip for button3',
+                  'style_class': 'lmvdbg_canvas_tb_button_solid',
                   'visible': true,
                   'backgroundImage': './res/icons/lmvdbgSolid.png',
                   'onClick': function(e){
@@ -117,6 +118,7 @@ function onViewerInitialized(viewer)
                   'id': 'button4',
                   'buttonText': 'button4',
                   'tooltip': 'tooltip for button4',
+                  'style_class': 'lmvdbg_canvas_tb_button_gradient',
                   'visible': true,
                   'backgroundImage': './res/icons/lmvdbgGradient.png',
                   'onClick': function(e){
@@ -130,9 +132,11 @@ function onViewerInitialized(viewer)
                 //Id of toolbar
               'id': 'toolbar_custom_cancas_1',
               // position of toolbar
-              // possible values 'viewer_subToolbar' | 'viewer_canvas' | 'custom_canvas'
-              'toolbar_type': 'custom_canvas',
-              // css classname of toolbar position, required for | 'viewer_canvas' | 'custom_canvas'
+              // possible values 'viewer_subToolbar' | 'viewer_canvas' | 'custom_container'
+              'toolbar_type': 'custom_container',
+              // the containeer div of toolbar, this is required for toolbar_type 'custom_container'
+              'toolbar_container' : 'custom_toolbar_container',
+              // css classname of toolbar position, required for | 'viewer_canvas' | 'custom_container'
               'style_class': 'lmvdbg_div_tb_positioner',
               // array of buttons
               'buttons': [
@@ -140,10 +144,11 @@ function onViewerInitialized(viewer)
                   'id': 'button5',
                   'buttonText': 'Rotation',
                   'tooltip': 'tooltip of button5',
+                  'style_class': 'lmvdbg_div_tb_button_red',
                   'visible': true,
-                  'backgroundImage': 'Images/3d_rotation.png',
+                  'backgroundImage': './res/icons/lmvdbg1.png',
                   'onClick': function(e){
-                     alert('button4 is clicked.');
+                     alert('button5 is clicked.');
 
                   }
                 },
@@ -151,10 +156,11 @@ function onViewerInitialized(viewer)
                   'id': 'button6',
                   'buttonText': 'Rotation',
                   'tooltip': 'tooltip of button6',
+                  'style_class': 'lmvdbg_div_tb_button_blue',
                   'visible': true,
-                  'backgroundImage': 'Images/3d_rotation.png',
+                  'backgroundImage': './res/icons/lmvdbg2.png',
                   'onClick': function(e){
-                     alert('button4 is clicked.');
+                     alert('button6 is clicked.');
 
                   }
                 }
