@@ -89,7 +89,32 @@ function onViewerInitialized(viewer)
                      alert('button2 is clicked.');
 
                   }
+                },
+                {
+                  'id': 'buttonRecording',
+                  'buttonText': 'Record Path',
+                  'tooltip': 'Record the path when viewing',
+                  //'visible': false, //default is true
+                  'backgroundImage': './res/icons/lmvdbg2.png',
+                  'onClick': startRecording
+                },
+                {
+                  'id': 'buttonStopRecording',
+                  'buttonText': 'Strop Record Path',
+                  'tooltip': 'Strop the recording',
+                  //'visible': false, //default is true
+                  'backgroundImage': './res/icons/lmvdbg2.png',
+                  'onClick': stopRecording
+                },
+                {
+                  'id': 'buttonReplay',
+                  'buttonText': 'Replay Path',
+                  'tooltip': 'Replay the recorded the path',
+                  //'visible': false, //default is true
+                  'backgroundImage': './res/icons/lmvdbg2.png',
+                  'onClick': replayRecording
                 }
+                  
               ]
             },
             {
@@ -177,15 +202,12 @@ function onViewerInitialized(viewer)
     //load the toolbar extension
     viewer.loadExtension('Autodesk.ADN.Viewing.Extension.ToolbarExt', options);
 
-    //viewer.loadExtension('Autodesk.ADN.Viewing.Extension.Toolbar', options);
+    //load the path recording extension
+    viewer.loadExtension('Autodesk.ADN.Viewing.Extension.PathRecorder', options);
 
 
 
 
-
-
-
-    
 };
 
 function onError(error)
@@ -193,6 +215,27 @@ function onError(error)
     console.log(error);
 };
 
+
+function startRecording(){
+
+  alert('Record Path is clicked.');
+
+  _viewer.startRecording();
+
+};
+
+function stopRecording(){
+
+  alert('recording is stopped.');
+  _viewer.stopRecording();
+};
+
+function replayRecording(){
+
+  alert('Replay is clicked.');
+
+  _viewer.replayRecording();
+};
 
 // Following code does not rely on Autodesk.ADN.Toolkit.Viewer.AdnViewerManager
 // and uses Autodesk API directly
