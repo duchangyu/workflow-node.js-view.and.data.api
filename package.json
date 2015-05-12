@@ -24,6 +24,7 @@
     "serve-favicon": "*",
     "stringstream": "0.0.4",
     "tough-cookie": "^0.13.0",
-    "tunnel-agent": "^0.4.0"
+    "tunnel-agent": "^0.4.0",
+    "cors" : "*"
   }
 }

@@ -24,17 +24,7 @@ get model URNs - as explained in the Setup/Usage Instructions.
 
 ## Setup/Usage Instructions
  
-* From the sample root folder, rename or copy the ./credentials_.js file into ./credentials.js <br />
-  * Windows <br />
-    ```
-    copy credentials_.js credentials.js 
-	```
-  * OSX/Linux <br />
-    ```
-    cp credentials_.js credentials.js  
-	```
-* The [upload tool](http://still-spire-1606.herokuapp.com) provides some existing models. Choose any one of them, or upload one of your own
-  models with [upload tool](http://still-spire-1606.herokuapp.com). The [upload tool](http://still-spire-1606.herokuapp.com) will generate a URN of the model that you need later.
+* The [upload tool](http://still-spire-1606.herokuapp.com) provides some existing models. Choose any one of them, or upload one of your own models with [upload tool](http://still-spire-1606.herokuapp.com). The [upload tool](http://still-spire-1606.herokuapp.com) will generate a URN of the model that you need later.
 * Copy the URN which was generated in the previous step in file /www/index.js at line #18 <br />
   ```
   var defaultUrn = '<replace with your encoded urn>';
