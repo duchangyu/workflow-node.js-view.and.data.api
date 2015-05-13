@@ -15,7 +15,7 @@
 // DOES NOT WARRANT THAT THE OPERATION OF THE PROGRAM WILL BE
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////////////////
-var defaultUrn = '<replace with your encoded urn>';
+var defaultUrn = 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE1LTA1LTExLTA5LTE2LTEwLWdlN3B4aXNzNDF0eGRqdHhxa3R4eTN3MWc2emUvUm9ib3RBcm0uZHdmeA==';
 
 $(document).ready(function () {
     var tokenurl = 'http://' + window.location.host + '/api/token';
