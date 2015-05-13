@@ -27,9 +27,7 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
-# API credentials file
-credentials.js
+# Local test run script
+run.bat
+run.sh
 
-# webstorm project files
-.idea
-credentials_.js
