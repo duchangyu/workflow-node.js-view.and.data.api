@@ -21,44 +21,17 @@ var request = require('request');
 
 var router = express.Router();
 
-var cors = require('cors');
-
-var corsOptions = {
-  origin: 'http://secure-token.herokuapp.com'
-};
-
-router.get('/tokenadsk', function (req, res) {
-
-    //steals access token from http://secure-token.herokuapp.com
-    request('http://secure-token.herokuapp.com/api/token',
-      function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            res.send(body);
-        }
-    });
-});
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Generates access token
 ///////////////////////////////////////////////////////////////////////////////
-router.get('/token', cors(corsOptions),function (req, res) {
+router.get('/token', function (req, res) {
     var params = {
         client_id:  process.env.ConsumerKey , 
         client_secret:  process.env.ConsumerSecret, 
         grant_type: 'client_credentials'
     }
-
-    // var thisHost = req.headers.refer;//req.protocol + '://' + req.get('host');
-    //var appHost = 'http://secure-token.herokuapp.com';
-
-    // if (thisHost != appHost) {
-    //     var strMsg = ' request host: ' + thisHost;
-    //     strMsg = strMsg + ' app host: ' + appHost;
-    //     res.send('host restricted.' + strMsg);
-    //     return;
-    // }
 
 
     request.post(
@@ -67,6 +40,8 @@ router.get('/token', cors(corsOptions),function (req, res) {
 
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
+
+                res.setHeader('Content-Type', 'application/json');
 
                 // Website you wish to allow to connect
                 //res.setHeader('Access-Control-Allow-Origin', appHost);

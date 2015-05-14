@@ -19,14 +19,12 @@
 var favicon = require('serve-favicon');
 var api = require('./routes/api');
 var express = require('express');
-var cors = require('cors');
 
 var app = express();
 
 app.use('/', express.static(__dirname + '/www'));
 app.use(favicon(__dirname + '/www/images/favicon.ico'));
 app.use('/api', api);
-app.use(cors);
 
 app.set('port', process.env.PORT || 3000);
 
